@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite --host --port 3000",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
+  "dev": "vite --host --port 3000",
+  "build": "npx vite build",
+  "preview": "vite preview",
+  "postinstall": "chmod +x node_modules/.bin/vite"
+},
+
   "dependencies": {
     "antd": "^5.27.1",
     "chart.js": "^4.5.0",
