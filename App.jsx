@@ -21,10 +21,10 @@ import CartSettings from "./src/pages/analyze/CartSettings.jsx";
 import CustomersAnalyze from "./src/pages/analyze/Customers.jsx";
 import CustomerSources from "./src/pages/analyze/CustomerSources.jsx";
 import CustomersGroup from "./src/pages/analyze/CustomersGroup.jsx";
-import CustomerRetention from "./src/pages/analyze/CustomerRetention.jsx"; 
-import Reports from "./src/pages/analyze/Reports.jsx"; 
-import Cohorts from "./src/pages/analyze/Cohorts.jsx"; // ✅ NEW PAGE
-import ReturningCustomers from "./src/pages/analyze/ReturningCustomers.jsx"; // ✅ ADDED ReturningCustomers
+import CustomerRetention from "./src/pages/analyze/CustomerRetention.jsx";
+import Reports from "./src/pages/analyze/Reports.jsx";
+import Cohorts from "./src/pages/analyze/Cohorts.jsx";
+import ReturningCustomers from "./src/pages/analyze/ReturningCustomers.jsx";
 
 // Other main pages
 import Orders from "./src/pages/Order.jsx";
@@ -40,6 +40,14 @@ export default function App() {
   );
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
+
+  // ✅ Responsive Hook
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const html = document.documentElement;
@@ -59,14 +67,19 @@ export default function App() {
       scaling="100%"
     >
       <div
-        className={`min-h-screen ${
-          darkMode ? "dark bg-slate-900 text-white" : "bg-white text-slate-900"
-        }`}
+        style={{
+          minHeight: "100vh",
+          backgroundColor: darkMode ? "#0f172a" : "#ffffff",
+          color: darkMode ? "#ffffff" : "#0f172a",
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
         <Router>
           <A2KeySidebarLayout
             darkMode={darkMode}
             toggleDarkMode={toggleDarkMode}
+            isMobile={isMobile} // ✅ Pass responsive state
           >
             <Routes>
               {/* Default redirect */}
@@ -95,8 +108,8 @@ export default function App() {
               <Route path="/analyze/customersgroup" element={<CustomersGroup />} />
               <Route path="/analyze/customerretention" element={<CustomerRetention />} />
               <Route path="/analyze/reports" element={<Reports />} />
-              <Route path="/analyze/cohorts" element={<Cohorts />} /> {/* ✅ NEW ROUTE */}
-              <Route path="/analyze/returningcustomers" element={<ReturningCustomers />} /> {/* ✅ NEW ROUTE for ReturningCustomers */}
+              <Route path="/analyze/cohorts" element={<Cohorts />} />
+              <Route path="/analyze/returningcustomers" element={<ReturningCustomers />} />
 
               {/* 404 fallback */}
               <Route path="*" element={<NotFound />} />
